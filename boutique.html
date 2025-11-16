@@ -1,0 +1,391 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Drive Prime • Fleet</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Tailwind CDN for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        --gold: #f5c542;
+        --dark: #050816;
+        --dark-2: #0f172a;
+      }
+      .bg-gradient-hero {
+        background: radial-gradient(circle at top, #1e293b, #020617);
+      }
+      .text-gradient-gold {
+        background: linear-gradient(90deg, #facc15, #f97316);
+        -webkit-background-clip: text;
+        color: transparent;
+      }
+      .shadow-gold {
+        box-shadow: 0 15px 30px rgba(245, 197, 66, 0.25);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col bg-slate-950 text-white">
+    <!-- Simple header -->
+    <header class="w-full border-b border-white/10 bg-black/60 backdrop-blur z-20">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-[var(--gold)] text-black font-black text-lg shadow-gold">
+            DP
+          </span>
+          <div>
+            <h1 class="text-lg font-bold tracking-tight">Drive Prime</h1>
+            <p class="text-xs text-white/60">Luxury car rental</p>
+          </div>
+        </div>
+        <nav class="hidden sm:flex items-center gap-4 text-sm text-white/70">
+          <a href="#" class="hover:text-[var(--gold)]">Home</a>
+          <a href="#" class="text-[var(--gold)] font-semibold">Shop</a>
+          <a href="https://wa.me/212661627339" target="_blank" class="px-3 py-1 rounded-full bg-[var(--gold)] text-black font-semibold text-xs shadow-gold hover:opacity-90">
+            WhatsApp
+          </a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="bg-gradient-hero py-16">
+      <div class="max-w-4xl mx-auto px-4 text-center">
+        <span class="inline-flex items-center px-4 py-1 mb-4 rounded-full bg-[var(--gold)] text-black font-bold text-xs tracking-wide">
+          SHOP • FULL CATALOG
+        </span>
+        <h2 class="text-3xl md:text-4xl font-black mb-4 leading-tight">
+          All our <span class="text-gradient-gold">available cars</span>
+        </h2>
+        <p class="text-base md:text-lg text-white/80">
+          Discover our full fleet of luxury vehicles in Morocco.
+          Choose your car, fill in the form, and confirm your
+          booking directly via WhatsApp.
+        </p>
+      </div>
+    </section>
+
+    <!-- CARS LIST -->
+    <main class="flex-1 bg-slate-900 py-12">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="text-center mb-10">
+          <h3 id="cars-count" class="text-2xl md:text-3xl font-black mb-2"></h3>
+          <p class="text-sm text-slate-300">
+            From economical city cars to premium SUVs and supercars.
+          </p>
+        </div>
+
+        <div
+          id="cars-grid"
+          class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"
+        ></div>
+      </div>
+    </main>
+
+    <!-- BOOKING MODAL -->
+    <div
+      id="booking-modal-backdrop"
+      class="fixed inset-0 bg-black/60 backdrop-blur-sm items-center justify-center p-4 hidden z-40"
+    >
+      <div
+        class="bg-slate-950 rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto border border-white/10 shadow-2xl"
+      >
+        <div class="px-6 pt-6 pb-2 border-b border-white/10 flex items-start justify-between gap-4">
+          <div>
+            <h4 id="modal-title" class="text-xl font-bold mb-1">
+              Book
+            </h4>
+            <p class="text-sm text-slate-300">
+              Price:
+              <span
+                id="modal-price"
+                class="font-bold text-yellow-400 text-base"
+              ></span>
+            </p>
+          </div>
+          <button
+            id="modal-close"
+            class="text-slate-400 hover:text-white text-xl leading-none"
+          >
+            ✕
+          </button>
+        </div>
+
+        <form id="booking-form" class="px-6 py-5 space-y-4 text-sm">
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label for="name" class="block mb-1 font-semibold">Full name</label>
+              <input
+                id="name"
+                type="text"
+                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                placeholder="Your name"
+                required
+              />
+            </div>
+            <div>
+              <label for="phone" class="block mb-1 font-semibold">Phone number</label>
+              <input
+                id="phone"
+                type="tel"
+                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                placeholder="+212 6XX-XXXXXX"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label for="pickupCity" class="block mb-1 font-semibold">Pick-up city</label>
+              <select
+                id="pickupCity"
+                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                required
+              >
+                <option value="">Choose</option>
+                <option value="Agadir">Agadir</option>
+                <option value="Marrakech">Marrakech</option>
+                <option value="Casablanca">Casablanca</option>
+                <option value="Rabat">Rabat</option>
+                <option value="Tanger">Tanger</option>
+              </select>
+            </div>
+            <div>
+              <label for="pickupDate" class="block mb-1 font-semibold">Pick-up date</label>
+              <input
+                id="pickupDate"
+                type="date"
+                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label for="dropCity" class="block mb-1 font-semibold">Drop-off city</label>
+              <select
+                id="dropCity"
+                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                required
+              >
+                <option value="">Choose</option>
+                <option value="Agadir">Agadir</option>
+                <option value="Marrakech">Marrakech</option>
+                <option value="Casablanca">Casablanca</option>
+                <option value="Rabat">Rabat</option>
+                <option value="Tanger">Tanger</option>
+              </select>
+            </div>
+            <div>
+              <label for="dropDate" class="block mb-1 font-semibold">Drop-off date</label>
+              <input
+                id="dropDate"
+                type="date"
+                class="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                required
+              />
+            </div>
+          </div>
+
+          <div class="flex gap-3 pt-4">
+            <button
+              type="button"
+              id="btn-cancel"
+              class="flex-1 px-4 py-2 rounded-lg border border-slate-600 text-slate-200 hover:bg-slate-800"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="flex-1 px-4 py-2 rounded-lg bg-[var(--gold)] text-black font-semibold hover:opacity-90 shadow-gold"
+            >
+              Confirm via WhatsApp
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-white/10 bg-black/70 text-xs text-slate-400">
+      <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+        <span>© <span id="year"></span> Drive Prime. All rights reserved.</span>
+        <span>WhatsApp contact: <span class="text-[var(--gold)] font-semibold">+212 6 61 62 73 39</span></span>
+      </div>
+    </footer>
+
+    <!-- SCRIPT -->
+    <script>
+      const cars = [
+       
+        { id: 2, name: "Porsche Panamera", price: "2 990 €/day", image: "https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 3, name: "Hyundai Tucson", price: "590 €/day", image: "https://images.unsplash.com/photo-1617814076367-b759c7d7e738?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 4, name: "Hyundai Accent", price: "350 €/day", image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 5, name: "Renault Megane", price: "450 €/day", image: "https://images.unsplash.com/photo-1609521263047-f8f205293f24?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 6, name: "Lamborghini Urus", price: "6 900 €/day", image: "https://images.unsplash.com/photo-1621135802920-133df287f89c?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 7, name: "Audi RS3", price: "1 890 €/day", image: "https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 8, name: "Jeep Cherokee", price: "890 €/day", image: "https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 9, name: "Hyundai i30", price: "420 €/day", image: "https://images.unsplash.com/photo-1619682817481-e994891cd1f5?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 10, name: "Dacia Duster", price: "420 €/day", image: "https://images.unsplash.com/photo-1590362891991-f776e747a588?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 11, name: "Dacia Logan", price: "320 €/day", image: "https://images.unsplash.com/photo-1706589271894-4f4887011e51?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Manual" } },
+        { id: 12, name: "Golf 8", price: "550 €/day", image: "https://images.unsplash.com/photo-1665411767657-f72503c1f557?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 13, name: "Porsche Boxster 718", price: "2 490 €/day", image: "https://images.unsplash.com/photo-1503376780353-7e6692767b70?q=80&w=1920", specs: { seats: 2, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 14, name: "Cupra Leon", price: "690 €/day", image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 15, name: "Hyundai i20", price: "340 €/day", image: "https://images.unsplash.com/photo-1552519507-da3b142c6e3d?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 16, name: "Mercedes C220d", price: "790 €/day", image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 17, name: "Audi Q3", price: "890 €/day", image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 18, name: "Porsche Macan T", price: "1 690 €/day", image: "https://images.unsplash.com/photo-1611859266238-4b98091d9d9b?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 19, name: "Porsche Macan S", price: "1 890 €/day", image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 20, name: "Porsche Macan GTS", price: "2 190 €/day", image: "https://images.unsplash.com/photo-1614200187524-dc4b892acf16?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 21, name: "Mercedes Vito", price: "690 €/day", image: "https://images.unsplash.com/photo-1527786356703-4b100091cd2c?q=80&w=1920", specs: { seats: 8, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 22, name: "Audi Q8", price: "1 390 €/day", image: "https://images.unsplash.com/photo-1616422285623-13ff0162193c?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 23, name: "Audi A3", price: "590 €/day", image: "https://images.unsplash.com/photo-1606220838315-056192d5e927?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 24, name: "BMW Série 1", price: "690 €/day", image: "https://images.unsplash.com/photo-1617531653332-bd46c24f2068?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 25, name: "BMW Série 5", price: "990 €/day", image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 26, name: "BMW Série 4 Cabriolet", price: "1 290 €/day", image: "https://images.unsplash.com/photo-1523983302122-73e869e1f850?q=80&w=1920", specs: { seats: 4, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 27, name: "BMW Série 3", price: "890 €/day", image: "https://images.unsplash.com/photo-1613027570801-5d2fe8f5e15d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 28, name: "BMW X5", price: "1 190 €/day", image: "https://images.unsplash.com/photo-1617469767053-d3b523a0b982?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 29, name: "Fiat 500", price: "290 €/day", image: "https://images.unsplash.com/photo-1550355291-bbee04a92027?q=80&w=1920", specs: { seats: 4, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 30, name: "Maserati Levante", price: "2 490 €/day", image: "https://images.unsplash.com/photo-1563720360172-67b8f3dce741?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 31, name: "Maserati Ghibli", price: "2 290 €/day", image: "https://images.unsplash.com/photo-1617654112368-307921291f42?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        
+        { id: 33, name: "Range Rover Sport", price: "1 990 €/day", image: "https://images.unsplash.com/photo-1563720360172-67b8f3dce741?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 32, name: "Audi RS6", price: "590 €/day", image: "https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 35, name: "Mercedes G63", price: "3 990 €/day", image: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?q=80&w=1920", specs: { seats: 5, fuel: "Petrol", transmission: "Automatic" } },
+        { id: 36, name: "Mercedes Classe E", price: "990 €/day", image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        
+        { id: 41, name: "HONDA", price: "1 990 €/day", image: "https://images.unsplash.com/photo-1519641471654-76ce0107ad1b?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+        { id: 42, name: "Mercedes", price: "890 €/day", image: "https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?q=80&w=1920", specs: { seats: 5, fuel: "Diesel", transmission: "Automatic" } },
+      ];
+
+      // Display the number of vehicles
+      document.getElementById("cars-count").textContent =
+        cars.length + " vehicles available";
+
+      // Render the cards
+      const grid = document.getElementById("cars-grid");
+      grid.innerHTML = cars
+        .map(
+          (car) => `
+        <div class="bg-slate-950 border border-slate-800 rounded-2xl overflow-hidden group hover:border-yellow-400/70 hover:shadow-gold transition-all duration-300 flex flex-col">
+          <div class="relative h-56 overflow-hidden">
+            <img
+              src="${car.image}"
+              alt="${car.name}"
+              class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+            <div class="absolute bottom-4 left-4 right-4 flex flex-col gap-1">
+              <h4 class="font-bold text-lg">${car.name}</h4>
+              <span class="inline-flex items-center px-3 py-1 rounded-full bg-[var(--gold)] text-black font-bold text-sm shadow-gold">
+                ${car.price}
+              </span>
+            </div>
+          </div>
+          <div class="p-4 flex-1 flex flex-col">
+            <div class="flex items-center justify-between text-xs text-slate-300 mb-4">
+              <span class="flex items-center gap-1">
+                <span>👥</span>${car.specs.seats} seats
+              </span>
+              <span class="flex items-center gap-1">
+                <span>⛽</span>${car.specs.fuel}
+              </span>
+              <span class="flex items-center gap-1">
+                <span>⚙️</span>${car.specs.transmission}
+              </span>
+            </div>
+            <button
+              data-car-id="${car.id}"
+              class="mt-auto w-full px-4 py-2 rounded-lg bg-[var(--gold)] text-black font-semibold text-sm shadow-gold hover:opacity-90"
+            >
+              Book now
+            </button>
+          </div>
+        </div>
+      `
+        )
+        .join("");
+
+      // Modal management
+      const backdrop = document.getElementById("booking-modal-backdrop");
+      const modalTitle = document.getElementById("modal-title");
+      const modalPrice = document.getElementById("modal-price");
+      const closeBtn = document.getElementById("modal-close");
+      const cancelBtn = document.getElementById("btn-cancel");
+      const form = document.getElementById("booking-form");
+
+      let selectedCar = null;
+
+      function openModal(car) {
+        selectedCar = car;
+        modalTitle.textContent = "Book " + car.name;
+        modalPrice.textContent = car.price;
+        backdrop.classList.remove("hidden");
+        backdrop.classList.add("flex");
+      }
+
+      function closeModal() {
+        selectedCar = null;
+        backdrop.classList.add("hidden");
+        backdrop.classList.remove("flex");
+        form.reset();
+      }
+
+      // "Book" buttons
+      document.querySelectorAll("[data-car-id]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = Number(btn.getAttribute("data-car-id"));
+          const car = cars.find((c) => c.id === id);
+          if (car) openModal(car);
+        });
+      });
+
+      closeBtn.addEventListener("click", closeModal);
+      cancelBtn.addEventListener("click", closeModal);
+      backdrop.addEventListener("click", (e) => {
+        if (e.target === backdrop) closeModal();
+      });
+
+      // Form submission
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+        if (!selectedCar) return;
+
+        const name = document.getElementById("name").value.trim();
+        const phone = document.getElementById("phone").value.trim();
+        const pickupCity = document.getElementById("pickupCity").value;
+        const pickupDate = document.getElementById("pickupDate").value;
+        const dropCity = document.getElementById("dropCity").value;
+        const dropDate = document.getElementById("dropDate").value;
+
+        if (!name || !phone || !pickupCity || !pickupDate || !dropCity || !dropDate) {
+          alert("Please fill in all fields.");
+          return;
+        }
+
+        const message = `New booking:
+Car: ${selectedCar.name}
+Price: ${selectedCar.price}
+
+Name: ${name}
+Phone: ${phone}
+
+Pick-up: ${pickupCity} - ${pickupDate}
+Drop-off: ${dropCity} - ${dropDate}`;
+
+        const url =
+          "https://wa.me/212661627339?text=" + encodeURIComponent(message);
+        window.open(url, "_blank");
+        closeModal();
+      });
+
+      // Footer year
+      document.getElementById("year").textContent =
+        new Date().getFullYear();
+    </script>
+  </body>
+</html>
+
